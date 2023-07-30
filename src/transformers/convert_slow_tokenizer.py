@@ -793,7 +793,7 @@ class Kosmos2Converter(SpmConverter):
             ("</phrase>", 0.0),
             ("<object>", 0.0),
             ("</object>", 0.0),
-            ("</delimiter_of_multi_objects>", 0.0),
+            ("</delimiter_of_multi_objects/>", 0.0),
             ("<grounding>", 0.0),
         ]
         # fmt: on
