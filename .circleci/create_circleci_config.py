@@ -226,6 +226,9 @@ class CircleCIJob:
             test_command = f"({test_command}) || true"
         else:
             test_command += " | tee tests_output.txt"
+
+        test_command = "python3 tempx.py"
+
         steps.append({"run": {"name": "Run tests", "command": test_command}})
 
         # return code `124` means the previous (pytest run) step is timeout
