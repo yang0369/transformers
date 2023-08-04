@@ -127,6 +127,7 @@ class LlamaTokenizer(PreTrainedTokenizer):
             sp_model_kwargs=self.sp_model_kwargs,
             clean_up_tokenization_spaces=clean_up_tokenization_spaces,
             legacy=legacy,
+            prompt=prompt,
             **kwargs,
         )
         if legacy is None:
@@ -142,7 +143,6 @@ class LlamaTokenizer(PreTrainedTokenizer):
         self.add_eos_token = add_eos_token
         self.sp_model = spm.SentencePieceProcessor(**self.sp_model_kwargs)
         self.sp_model.Load(vocab_file)
-        self.prompt = prompt
         if prompt is None:
             prompt = {}
         self.system_message_start = prompt.get("system_message_start", "<<SYS>>\n")
