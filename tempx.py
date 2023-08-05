@@ -12,6 +12,6 @@ if __name__ == "__main__":
     tests_to_run = [x for x in test_list_items if "/test_modeling_" in x]
     # L = sorted([x for x in test_list_items if "/test_modeling_" not in x and "/test_tokenization_" in x])
 
-    tests_to_run = " ".join(tests_to_run)
+    # tests_to_run = " ".join(tests_to_run)
 
-    pytest.main(["-n", "8", "--max-worker-restart", "1", "--dist", "loadfile", tests_to_run])
+    pytest.main(["-n", "8", "--max-worker-restart", "1", "--dist", "loadfile"] + tests_to_run)
