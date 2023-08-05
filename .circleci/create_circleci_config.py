@@ -227,7 +227,7 @@ class CircleCIJob:
         else:
             test_command += " | tee tests_output.txt"
 
-        test_command = "python3 tempx.py"
+        # test_command = "python3 tempx.py"
 
         steps.append({"run": {"name": "Run tests", "command": test_command}})
 
@@ -583,7 +583,7 @@ def create_circleci_config(folder=None):
 
         for job in jobs:
             if job.job_name in ["tests_torch", "tests_tf", "tests_flax"]:
-                job.tests_to_run = [x for x in test_list_items if "/test_modeling_" in x]
+                job.tests_to_run = [x for x in test_list_items if "/test_modeling_" in x or "/test_tokenization_" in x]
             elif job.job_name == "tests_non_modeling":
                 L = sorted([x for x in test_list_items if "/test_modeling_" not in x and "/test_tokenization_" in x])
                 job.tests_to_run = L[:64]  # [x for x in L if any(y in x for y in ["_bert.py", "_gpt2.py", "_bart.py", "_t5.py", "_roberta.py", "_deberta.py", "_longformer.py", "_led.py", "_albert.py", "_xlm_roberta.py"])]  #, ])]
