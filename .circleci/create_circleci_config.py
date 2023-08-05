@@ -585,7 +585,8 @@ def create_circleci_config(folder=None):
             if job.job_name in ["tests_torch", "tests_tf", "tests_flax"]:
                 # job.tests_to_run = [x for x in test_list_items if "/test_modeling_" in x or "/test_tokenization_" in x]
                 L = [x for x in test_list_items if "/test_modeling_" in x]
-                L2 = [x for x in L if "/test_modeling_oneformer.py" not in x and "/test_modeling_pegasus_x.py" not in x and "/test_modeling_tvlt.py" not in x and "/test_modeling_bigbird_pegasus.py" not in x]
+                # L2 = [x for x in L if "/test_modeling_oneformer.py" not in x and "/test_modeling_pegasus_x.py" not in x and "/test_modeling_tvlt.py" not in x and "/test_modeling_bigbird_pegasus.py" not in x]
+                L2 = [x for x in L if "/test_modeling_pegasus_x.py" not in x and "/test_modeling_tvlt.py" not in x and "/test_modeling_bigbird_pegasus.py" not in x]
                 job.tests_to_run = L[:32] + L2
             elif job.job_name == "tests_non_modeling":
                 L = sorted([x for x in test_list_items if "/test_modeling_" not in x and "/test_tokenization_" in x])
