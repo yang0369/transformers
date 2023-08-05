@@ -283,7 +283,7 @@ torch_and_flax_job = CircleCIJob(
 
 
 torch_job = CircleCIJob(
-    "non_modeling",
+    "torch",
     install_steps=[
         "sudo apt-get -y update && sudo apt-get install -y libsndfile1-dev espeak-ng time",
         "pip install --upgrade --upgrade-strategy eager pip",
