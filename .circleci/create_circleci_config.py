@@ -282,7 +282,7 @@ torch_and_flax_job = CircleCIJob(
 )
 
 
-non_modeling_job = CircleCIJob(
+torch_job = CircleCIJob(
     "non_modeling",
     install_steps=[
         "sudo apt-get -y update && sudo apt-get install -y libsndfile1-dev espeak-ng time",
@@ -296,7 +296,7 @@ non_modeling_job = CircleCIJob(
 )
 
 
-torch_job = CircleCIJob(
+torch_jobx = CircleCIJob(
     "torch",
     install_steps=[
         "sudo apt-get -y update && sudo apt-get install -y libsndfile1-dev espeak-ng time",
@@ -529,14 +529,14 @@ doc_test_job = CircleCIJob(
 REGULAR_TESTS = [
     # torch_and_tf_job,
     # torch_and_flax_job,
-    # torch_job,
+    torch_job,
     # tf_job,
     # flax_job,
     # custom_tokenizers_job,
     # hub_job,
     # onnx_job,
     # exotic_models_job,
-    non_modeling_job,
+    # non_modeling_job,
 ]
 EXAMPLES_TESTS = [
     examples_torch_job,
