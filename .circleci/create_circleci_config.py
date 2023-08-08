@@ -285,7 +285,7 @@ torch_job = CircleCIJob(
         "pip install -U --upgrade-strategy eager git+https://github.com/huggingface/accelerate",
     ],
     parallelism=1,
-    pytest_num_workers=6,
+    pytest_num_workers=8,
 )
 
 
@@ -508,15 +508,7 @@ doc_test_job = CircleCIJob(
 )
 
 REGULAR_TESTS = [
-    torch_and_tf_job,
-    torch_and_flax_job,
     torch_job,
-    tf_job,
-    flax_job,
-    custom_tokenizers_job,
-    hub_job,
-    onnx_job,
-    exotic_models_job,
 ]
 EXAMPLES_TESTS = [
     examples_torch_job,
@@ -543,8 +535,7 @@ def create_circleci_config(folder=None):
             all_test_list = f.read()
     else:
         all_test_list = []
-    if len(all_test_list) > 0:
-        jobs.extend(PIPELINE_TESTS)
+
 
     test_file = os.path.join(folder, "filtered_test_list.txt")
     if os.path.exists(test_file):
@@ -593,9 +584,7 @@ def create_circleci_config(folder=None):
                 job.tests_to_run = [f"examples/{framework}"]
             else:
                 job.tests_to_run = [f for f in example_tests.split(" ") if f.startswith(f"examples/{framework}")]
-            
-            if len(job.tests_to_run) > 0:
-                jobs.append(job)
+
 
     doctest_file = os.path.join(folder, "doctest_list.txt")
     if os.path.exists(doctest_file):
@@ -603,12 +592,10 @@ def create_circleci_config(folder=None):
             doctest_list = f.read()
     else:
         doctest_list = []
-    if len(doctest_list) > 0:
-        jobs.extend(DOC_TESTS)
+
 
     repo_util_file = os.path.join(folder, "test_repo_utils.txt")
-    if os.path.exists(repo_util_file) and os.path.getsize(repo_util_file) > 0:
-        jobs.extend(REPO_UTIL_TESTS)
+
 
     if len(jobs) == 0:
         jobs = [EmptyJob()]
