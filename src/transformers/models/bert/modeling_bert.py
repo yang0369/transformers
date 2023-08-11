@@ -885,6 +885,7 @@ class BertModel(BertPreTrainedModel):
     """
 
     def __init__(self, config, add_pooling_layer=True):
+        a = 3
         super().__init__(config)
         self.config = config
 
