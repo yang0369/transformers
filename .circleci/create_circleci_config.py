@@ -552,17 +552,22 @@ def get_main_setup_checksum():
     repo = Repo(PATH_TO_REPO)
 
     current_head = repo.head.ref
+    print(current_head)
     main_head = repo.refs.main
+    print(main_head)
 
     setup_file_path = os.path.join(PATH_TO_REPO, "setup.py")
 
     main_head.checkout()
+    print(repo.head.ref)
+
     proc = subprocess.Popen(["sha256sum", f"{setup_file_path}"], stdout=subprocess.PIPE)
     checksum = proc.stdout.read().decode().split(" ")[0]
     checksum = b64encode(bytes.fromhex(checksum)).decode()
 
     # go back to the original branch
     current_head.checkout()
+    print(repo.head.ref)
 
     return checksum
 
@@ -576,17 +581,17 @@ def create_circleci_config(folder=None):
     checksum = None
     # if already on `main`, don't try to use the latest commit on `main` to avoid (rare) race condition where multiple
     # commits are merged into `main`.
-    if os.environ.get("CIRCLE_BRANCH", "pull") == "main":
+    if os.environ.get("CIRCLE_BRANCH", "pull") != "main":
         # Check if `setup.py` is modified.
         summary_file = os.path.join(folder, "tests_fetched_summary.txt")
         if os.path.exists(summary_file):
             with open(summary_file) as f:
                 tests_fetched_summary = f.read()
                 setup_file_modifiled = "### TEST TO RUN ###\n- tests\n" in tests_fetched_summary
-                if not setup_file_modifiled:
-                    # If not, we use `setup.py` of the `latest` commit on the `main` branch to compute the checksum for
-                    # cache
-                    checksum = get_main_setup_checksum()
+                # if not setup_file_modifiled:
+                # If not, we use `setup.py` of the `latest` commit on the `main` branch to compute the checksum for
+                # cache
+                checksum = get_main_setup_checksum()
 
     jobs = []
     all_test_file = os.path.join(folder, "test_list.txt")
