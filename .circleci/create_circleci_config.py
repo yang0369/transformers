@@ -576,7 +576,7 @@ def create_circleci_config(folder=None):
     checksum = None
     # if already on `main`, don't try to use the latest commit on `main` to avoid (rare) race condition where multiple
     # commits are merged into `main`.
-    if os.environ.get("CIRCLE_BRANCH", "pull") != "main":
+    if os.environ.get("CIRCLE_BRANCH", "pull") == "main":
         # Check if `setup.py` is modified.
         summary_file = os.path.join(folder, "tests_fetched_summary.txt")
         if os.path.exists(summary_file):
