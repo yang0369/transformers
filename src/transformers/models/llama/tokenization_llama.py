@@ -30,7 +30,7 @@ from ...utils import logging
 
 
 if TYPE_CHECKING:
-    from transformers.pipelines.conversational import Conversation
+    pass
 
 logger = logging.get_logger(__name__)
 
@@ -142,7 +142,6 @@ class LlamaTokenizer(PreTrainedTokenizer):
         self.add_eos_token = add_eos_token
         self.sp_model = spm.SentencePieceProcessor(**self.sp_model_kwargs)
         self.sp_model.Load(vocab_file)
-
 
     def __getstate__(self):
         state = self.__dict__.copy()
@@ -332,7 +331,6 @@ class LlamaTokenizer(PreTrainedTokenizer):
 
         return output
 
-
     def _build_conversation_input_ids(self, conversation: "ChatConversation") -> List[int]:
         r"""Builds the input ids for a conversation.
         This is the format used in the provided examples. System prompts should be manually added at the beginning of
@@ -364,7 +362,9 @@ class LlamaTokenizer(PreTrainedTokenizer):
 
         message_roles = [message["role"] for message in conversation.messages[1:]]  # Skip the system message here
 
-        if not all([role == "user" for role in message_roles[::2]]) or not all(role == "assistant" for role in message_roles[1::2]):
+        if not all([role == "user" for role in message_roles[::2]]) or not all(
+            role == "assistant" for role in message_roles[1::2]
+        ):
             # TODO Matt: Do we need to keep this check? Maybe some future LLaMA fine-tunes won't want this rule
             raise ValueError(
                 "LLaMA only supports 'user' and 'assistant' roles after the system message, starting with user and alternating (u/a/u/a/u...)"
@@ -396,7 +396,7 @@ class LlamaTokenizer(PreTrainedTokenizer):
         return dialog_tokens
 
     @property
-    def default_chat_settings(self):
+    def default_prompt_config(self):
         return {
             "default_system_message": DEFAULT_SYSTEM_PROMPT,
             "system_message_start": "<<SYS>>\n",
